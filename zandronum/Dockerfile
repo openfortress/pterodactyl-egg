@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:18.04
 MAINTAINER l_gruenewald@web.de
 
 RUN apt-get update -qq && apt-get upgrade -qq -y && \
