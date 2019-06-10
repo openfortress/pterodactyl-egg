@@ -3,12 +3,12 @@
     "meta": {
         "version": "PTDL_v1"
     },
-    "exported_at": "2019-06-10T17:00:03+02:00",
+    "exported_at": "2019-06-10T19:22:00+02:00",
     "name": "Zandronum",
     "author": "dhalucario@doggoat.de",
     "description": "Welcome to Zandronum!\r\n\r\nZandronum is a multiplayer oriented port, based off Skulltag, for Doom and Doom II by id Software.\r\n\r\nZandronum brings classic Doom into the 21st century, maintaining the essence of what has made Doom great for so many years and, at the same time, adding new features to modernize it, creating a fresh, fun new experience.",
     "image": "mclucario\/zandronum:env",
-    "startup": ".\/zandronum-server -port {{SERVER_PORT}} -iwad wads\/{{IWAD}} -file wads\/{{WADS}}",
+    "startup": ".\/zandronum-server -port {{SERVER_PORT}} -iwad wads\/{{IWAD}}",
     "config": {
         "files": "{}",
         "startup": "{\r\n    \"done\": \"UDP Initialized.\"\r\n}",
@@ -17,7 +17,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/ash\r\n# Zandronum Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\n\r\ncd \/mnt\/server\r\n\r\nwget -q https:\/\/zandronum.com\/downloads\/zandronum3.0-linux-x86_64.tar.bz2\r\ntar -xf zandronum*\r\n\r\nmkdir wads\r\ncd wads\r\n\r\nwget -q https:\/\/github.com\/freedoom\/freedoom\/releases\/download\/v0.11.3\/freedoom-0.11.3.zip\r\nunzip -qq -j freedoom-*",
+            "script": "#!\/bin\/ash\r\n# Zandronum Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\n\r\ncd \/mnt\/server\r\n\r\nwget -q https:\/\/zandronum.com\/downloads\/zandronum3.0-linux-x86_64.tar.bz2\r\ntar -xf zandronum*\r\nchmod +x .\/zandronum-server\r\n\r\nmkdir wads\r\ncd wads\r\n\r\nwget -q https:\/\/github.com\/freedoom\/freedoom\/releases\/download\/v0.11.3\/freedoom-0.11.3.zip\r\nunzip -qq -j freedoom-*\r\nrm freedoom*.zip\r\n\r\ncd ..",
             "container": "alpine:latest",
             "entrypoint": "ash"
         }
@@ -34,8 +34,8 @@
         },
         {
             "name": "WADS",
-            "description": "WAD (which, according to the Doom Bible, is an acrostic for \"Where's All the Data?\") is the file format used by Doom and all Doom-engine-based games for storing data. A WAD file consists of a header, a directory, and the data lumps that make up the resources stored within the file.\r\n\r\nhttps:\/\/doom.fandom.com\/wiki\/WAD",
-            "env_variable": "wads",
+            "description": "WAD (which, according to the Doom Bible, is an acrostic for \"Where's All the Data?\" ) is the file format used by Doom and all Doom-engine-based games for storing data. A WAD file consists of a header, a directory, and the data lumps that make up the resources stored within the file.\r\n\r\nhttps:\/\/doom.fandom.com\/wiki\/WAD",
+            "env_variable": "WADS",
             "default_value": "",
             "user_viewable": 0,
             "user_editable": 1,

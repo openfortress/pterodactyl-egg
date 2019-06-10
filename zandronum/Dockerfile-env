@@ -9,5 +9,5 @@ RUN adduser -D -h /home/container container
 
 WORKDIR /home/container
 
-COPY ./entrypoint.sh /entrypoint.sh
+COPY ./zandronum/entrypoint.sh /entrypoint.sh
 CMD ["/bin/bash", "/entrypoint.sh"]
