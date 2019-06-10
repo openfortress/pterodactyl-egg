@@ -3,12 +3,12 @@
     "meta": {
         "version": "PTDL_v1"
     },
-    "exported_at": "2019-06-08T13:06:01+02:00",
+    "exported_at": "2019-06-10T15:45:04+02:00",
     "name": "Zandronum",
     "author": "dhalucario@doggoat.de",
     "description": "Welcome to Zandronum!\r\n\r\nZandronum is a multiplayer oriented port, based off Skulltag, for Doom and Doom II by id Software.\r\n\r\nZandronum brings classic Doom into the 21st century, maintaining the essence of what has made Doom great for so many years and, at the same time, adding new features to modernize it, creating a fresh, fun new experience.",
-    "image": "ubuntu",
-    "startup": ".\/zandronum-server -iwad wads\/{{IWAD}} -file {{WADS}}",
+    "image": "mclucario\/zandronum:latest",
+    "startup": ".\/zandronum-server -port {{server_port}} -iwad wads\/{{IWAD}} -file wads\/{{WADS}}",
     "config": {
         "files": "{}",
         "startup": "{\r\n    \"done\": \"UDP Initialized.\"\r\n}",
@@ -17,8 +17,8 @@
     },
     "scripts": {
         "installation": {
-            "script": "apt update && apt upgrade -y && \\\r\napt install wget unzip -y && \\\r\napt install libc6 libstdc++6 zlib1g libsdl1.2debian bzip2 libssl1.0.0 libssl1.1  -y && \\\r\nmkdir -p \/mnt\/server\/wads && \\\r\ncd \/mnt\/server && \\\r\nwget https:\/\/zandronum.com\/downloads\/zandronum3.0-linux-x86_64.tar.bz2 && \\\r\ntar -xvf zandronum* && \\\r\ncd \/mnt\/server\/wads && \\\r\nwget https:\/\/github.com\/freedoom\/freedoom\/releases\/download\/v0.11.3\/freedoom-0.11.3.zip && \\\r\nunzip -j freedoom-* && \\\r\nrm *.zip *.txt *.html && \\\r\ncd .. && \\",
-            "container": "ubuntu",
+            "script": null,
+            "container": "apline:latest",
             "entrypoint": "bash"
         }
     },
