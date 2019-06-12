@@ -5,7 +5,9 @@ RUN apt-get update -qq && apt-get upgrade -qq -y && \
 apt-get install wget unzip -qq -y && \
 apt-get install libc6 libstdc++6 zlib1g libsdl1.2debian bzip2 libssl1.0.0 libssl1.1 -qq -y
 
-RUN adduser --home /home/container container
+RUN apt-get install -qq -y strace
+
+RUN useradd -m -d /home/container container
 
 USER container
 ENV HOME /home/container
