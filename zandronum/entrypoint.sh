@@ -12,9 +12,9 @@ fi
 # Replace Startup Variables
 MODIFIED_STARTUP=`eval echo $(echo ${MODIFIED_STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')`
 
+mkdir -p /home/container/.config/zandronum
+
 echo "$(pwd): $MODIFIED_STARTUP"
-
-#mkdir -p ~/.config/zandronum
-
 # Run the Server
+bash
 ${MODIFIED_STARTUP}
