@@ -15,5 +15,7 @@ ENV  USER=container HOME=/home/container
 
 WORKDIR /home/container
 
+RUN mkdir -p .config/zandronum
+
 COPY ./entrypoint.sh /entrypoint.sh
 CMD ["/bin/bash", "/entrypoint.sh"]
