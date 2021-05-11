@@ -1,45 +1,58 @@
 {
     "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
     "meta": {
-        "version": "PTDL_v1"
+        "version": "PTDL_v1",
+        "update_url": null
     },
-    "exported_at": "2019-06-10T19:36:24+02:00",
+    "exported_at": "2021-05-11T21:11:16+02:00",
     "name": "Zandronum",
-    "author": "dhalucario@doggoat.de",
-    "description": "Welcome to Zandronum!\r\n\r\nZandronum is a multiplayer oriented port, based off Skulltag, for Doom and Doom II by id Software.\r\n\r\nZandronum brings classic Doom into the 21st century, maintaining the essence of what has made Doom great for so many years and, at the same time, adding new features to modernize it, creating a fresh, fun new experience.",
-    "image": "mclucario\/zandronum:env",
-    "startup": ".\/zandronum-server -port {{SERVER_PORT}} -iwad wads\/{{IWAD}}",
+    "author": "l_gruenewald@web.de",
+    "description": null,
+    "features": null,
+    "images": [
+        "mclucario\/zandronum:latest"
+    ],
+    "startup": ".\/zandronum-server -port {{SERVER_PORT}} -useip 0.0.0.0 +map {{SRCDS_MAP}} -host {{MAX_PLAYERS}}",
     "config": {
         "files": "{}",
         "startup": "{\r\n    \"done\": \"UDP Initialized.\"\r\n}",
         "logs": "{}",
-        "stop": "Exit"
+        "stop": "Stop"
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/ash\r\n# Zandronum Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\n\r\ncd \/mnt\/server\r\n\r\nwget -q https:\/\/zandronum.com\/downloads\/zandronum3.0-linux-x86_64.tar.bz2\r\ntar -xf zandronum*\r\nrm zandronum*.tar.bz2\r\nchmod +x .\/zandronum-server\r\n\r\nmkdir wads\r\ncd wads\r\n\r\nwget -q https:\/\/github.com\/freedoom\/freedoom\/releases\/download\/v0.11.3\/freedoom-0.11.3.zip\r\nunzip -qq -j freedoom-*\r\nrm freedoom*.zip\r\n\r\ncd ..",
-            "container": "alpine:latest",
-            "entrypoint": "ash"
+            "script": "#!\/bin\/bash\r\ncd \/mnt\/server\r\nwget https:\/\/zandronum.com\/downloads\/zandronum3.0-linux-x86_64.tar.bz2 -O zandronum.tar.bz2\r\ntar -xvf zandronum.tar.bz2\r\n\r\nmkdir wads\r\ncd wads\r\nwget https:\/\/github.com\/freedoom\/freedoom\/releases\/download\/v0.12.1\/freedoom-0.12.1.zip -O freedoom.zip\r\nwget https:\/\/github.com\/freedoom\/freedoom\/releases\/download\/v0.12.1\/freedm-0.12.1.zip -O freedm.zip\r\n\r\nunzip freedoom.zip *.wad\r\nunzip freedm.zip *.wad\r\n\r\nrm *.zip",
+            "container": "mclucario\/zandronum:latest",
+            "entrypoint": "bash"
         }
     },
     "variables": [
         {
-            "name": "IWAD",
-            "description": "The acronym IWAD is generally interpreted as \"Internal WAD\" and refers to a WAD file which contains all of the game data for a complete game. The first four bytes of an IWAD file are the ASCII characters, \"IWAD\". \r\n\r\nhttps:\/\/doom.fandom.com\/wiki\/IWAD",
-            "env_variable": "iwad",
-            "default_value": "freedoom1.wad",
-            "user_viewable": 0,
-            "user_editable": 1,
-            "rules": "required|string|max:120"
+            "name": "Max Players",
+            "description": "The maximum amount of players allowed on your game server.",
+            "env_variable": "MAX_PLAYERS",
+            "default_value": "16",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|max:128"
         },
         {
-            "name": "WADS",
-            "description": "WAD (which, according to the Doom Bible, is an acrostic for \"Where's All the Data?\" ) is the file format used by Doom and all Doom-engine-based games for storing data. A WAD file consists of a header, a directory, and the data lumps that make up the resources stored within the file.\r\n\r\nhttps:\/\/doom.fandom.com\/wiki\/WAD",
-            "env_variable": "WADS",
+            "name": "IWAD",
+            "description": "",
+            "env_variable": "IWAD",
+            "default_value": "DOOM2.wad",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:32"
+        },
+        {
+            "name": "PWADS",
+            "description": "",
+            "env_variable": "PWADS",
             "default_value": "",
-            "user_viewable": 0,
-            "user_editable": 1,
-            "rules": "nullable|string|max:120"
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:1024"
         }
     ]
 }
