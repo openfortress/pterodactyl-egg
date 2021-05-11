@@ -1,7 +1,0 @@
-version: '3'
-
-services:
-  zandronum:
-    image: mclucario/zandronum:latest
-    ports:
-     - "10666:10666"
