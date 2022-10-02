@@ -5,7 +5,7 @@ USER root
 
 RUN apt update && \
     apt upgrade -y && \
-    apt install git python3 python3-pip
+    apt install -y strace
 
 USER container
 
