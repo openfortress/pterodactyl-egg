@@ -1,1 +1,42 @@
-/home/dhalucario/Downloads/egg-open-fortress.json
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2022-10-02T16:32:00+02:00",
+    "name": "Open Fortress",
+    "author": "l_gruenewald@web.de",
+    "description": null,
+    "features": null,
+    "docker_images": {
+        "ghcr.io\/pterodactyl\/games:source": "ghcr.io\/pterodactyl\/games:source"
+    },
+    "file_denylist": [],
+    "startup": ".\/sourceded\/srcds_run -game open_fortress -console -port {{SERVER_PORT}} +map {{SRCDS_MAP}} +ip 0.0.0.0 -strictportbind -norestart",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"gameserver Steam ID\"\r\n}",
+        "logs": "{}",
+        "stop": "quit"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n# steamcmd Base Installation Script\r\n# \r\n#\r\n# Server Files: \/mnt\/server\r\n# Image to install with is 'debian:buster-slim'\r\n\r\nSTEAM_USER=anonymous\r\n\r\n## download and install steamcmd\r\ncd \/tmp\r\nmkdir -p \/mnt\/server\/steamcmd\r\ncurl -sSL -o steamcmd.tar.gz https:\/\/steamcdn-a.akamaihd.net\/client\/installer\/steamcmd_linux.tar.gz\r\ntar -xzvf steamcmd.tar.gz -C \/mnt\/server\/steamcmd\r\nmkdir -p \/mnt\/server\/steamapps # Fix steamcmd disk write error when this folder is missing\r\ncd \/mnt\/server\/steamcmd\r\ncurl -sSL -o murse https:\/\/dl.spiderden.net\/murse\/linux\r\nchmod +x murse\r\n\r\n# SteamCMD fails otherwise for some reason, even running as root.\r\n# This is changed at the end of the install process anyways.\r\nchown -R root:root \/mnt\r\nexport HOME=\/mnt\/server\r\n\r\n## Install games using SteamCMD. running this twice because steam wants force_install_dir before login.\r\n.\/steamcmd.sh +force_install_dir \/mnt\/server\/tf2ded +login anonymous $( [[ \"${WINDOWS_INSTALL}\" == \"1\" ]] && printf %s '+@sSteamCmdForcePlatformType windows' ) +app_update 232250 validate +quit &\r\n.\/steamcmd.sh +force_install_dir \/mnt\/server\/sourceded +login anonymous $( [[ \"${WINDOWS_INSTALL}\" == \"1\" ]] && printf %s '+@sSteamCmdForcePlatformType windows' ) +app_update 244310 validate +quit &\r\nwait\r\n\r\n.\/murse upgrade \/mnt\/server\/sourceded\/open_fortress\r\n\r\n## Setup 32 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk32\r\ncp -v linux32\/steamclient.so ..\/.steam\/sdk32\/steamclient.so\r\n\r\n## Setup 64 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk64\r\ncp -v linux64\/steamclient.so ..\/.steam\/sdk64\/steamclient.so\r\n\r\npushd .\r\n## Fix up srcds links\r\ncd \/mnt\/server\/sourceded\/bin\r\nln -s datacache_srv.so datacache.so\r\nln -s dedicated_srv.so dedicated.so\r\nln -s engine_srv.so engine.so\r\nln -s materialsystem_srv.so materialsystem.so\r\nln -s replay_srv.so replay.so\r\nln -s scenefilecache_srv.so scenefilecache.so\r\nln -s shaderapiempty_srv.so shaderapiempty.so\r\nln -s soundemittersystem_srv.so soundemittersystem.so\r\nln -s studiorender_srv.so studiorender.so\r\nln -s vphysics_srv.so vphysics.so\r\nmv libstdc++.so.6 libstdc++.so.6.bak\r\n\r\n## Fix up gameinfo.txt for container\r\ncd ..\/open_fortress\/\r\nsed -i 's\/|all_source_engine_paths|\\.\\.\\\\Team Fortress 2\/\\\/home\\\/container\\\/tf2ded\/g' gameinfo.txt\r\n\r\n## Link srv.so\r\ncd bin\r\nln -s server.so server_srv.so\r\npopd",
+            "container": "ghcr.io\/pterodactyl\/installers:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Default Map",
+            "description": "The default map to use when starting the server.",
+            "env_variable": "SRCDS_MAP",
+            "default_value": "dm_gump",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|regex:\/^(\\w{1,20})$\/",
+            "field_type": "text"
+        }
+    ]
+}
